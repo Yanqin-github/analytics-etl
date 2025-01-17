@@ -1,0 +1,33 @@
+# QA environment configuration
+environment: qa
+
+extends:
+  - ../common/base_config.yaml
+
+app:
+  log_level: INFO
+
+collectors:
+  mongodb:
+    uri: ${MONGODB_QA_URI}
+    database: analytics_qa
+    
+  newrelic:
+    account_id: ${NEWRELIC_QA_ACCOUNT_ID}
+    api_key: ${NEWRELIC_QA_API_KEY}
+    
+  postgres:
+    host: ${POSTGRES_QA_HOST}
+    port: 5432
+    database: analytics_qa
+    user: ${POSTGRES_QA_USER}
+    password: ${POSTGRES_QA_PASSWORD}
+
+storage:
+  warehouse_path: s3://analytics-warehouse/qa
+  retention_days: 60
+
+powerbi:
+  workspace_id: ${POWERBI_QA_WORKSPACE_ID}
+  dataset_id: ${POWERBI_QA_DATASET_ID}
+  refresh_interval_hours: 4

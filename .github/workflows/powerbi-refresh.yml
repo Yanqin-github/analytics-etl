@@ -1,0 +1,26 @@
+name: PowerBI Refresh
+
+on:
+  workflow_run:
+    workflows: ["Analytics Pipeline"]
+    types:
+      - completed
+  schedule:
+    - cron: '0 */4 * * *'
+
+jobs:
+  refresh-powerbi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Refresh PowerBI Dataset
+        env:
+          POWERBI_CLIENT_ID: ${{ secrets.POWERBI_CLIENT_ID }}
+          POWERBI_CLIENT_SECRET: ${{ secrets.POWERBI_CLIENT_SECRET }}
+        run: python -m src.powerbi.refresh

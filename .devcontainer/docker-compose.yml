@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - ~/.aws:/home/vscode/.aws:cached
+    environment:
+      - ENVIRONMENT=dev
+      - AWS_PROFILE=default
+      - PYTHONPATH=/workspace
+    command: sleep infinity
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test

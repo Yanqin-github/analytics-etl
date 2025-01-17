@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: analytics-config
+data:
+  environment: dev
+  storage__warehouse_path: s3://analytics-warehouse
+  powerbi__refresh_interval: "4"

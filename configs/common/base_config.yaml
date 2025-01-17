@@ -1,0 +1,57 @@
+# Base configuration for all environments
+
+app:
+  name: analytics-etl
+  version: 1.0.0
+  log_level: INFO
+
+collectors:
+  batch_size: 1000
+  timeout_seconds: 30
+  retry_attempts: 3
+  
+  # Common collector configurations
+  mongodb:
+    collection: metrics
+    batch_size: 1000
+    timeout_ms: 30000
+    
+  newrelic:
+    metrics:
+      - name: response_time
+      - name: error_rate
+      - name: throughput
+    query_limit: 1000
+    
+  postgres:
+    metrics_query: "SELECT * FROM performance_metrics WHERE timestamp >= :start_time"
+    batch_size: 1000
+
+processors:
+  metric_mappings:
+    mongodb:
+      response_time_ms: latency
+      error_count: errors
+      request_count: requests
+    newrelic:
+      duration: latency
+      error.count: errors
+      request.count: requests
+    postgres:
+      query_time: latency
+      error_count: errors
+      query_count: requests
+
+storage:
+  format: iceberg
+  warehouse_path: s3://analytics-warehouse
+  catalog:
+    type: glue
+    warehouse: s3://analytics-warehouse
+  retention_days: 90
+  compression: gzip
+
+powerbi:
+  refresh_interval_hours: 4
+  retry_attempts: 3
+  timeout_seconds: 300

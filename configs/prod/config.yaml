@@ -1,0 +1,34 @@
+# Production environment configuration
+environment: prod
+
+extends:
+  - ../common/base_config.yaml
+
+app:
+  log_level: WARNING
+
+collectors:
+  mongodb:
+    uri: ${MONGODB_PROD_URI}
+    database: analytics_prod
+    
+  newrelic:
+    account_id: ${NEWRELIC_PROD_ACCOUNT_ID}
+    api_key: ${NEWRELIC_PROD_API_KEY}
+    
+  postgres:
+    host: ${POSTGRES_PROD_HOST}
+    port: 5432
+    database: analytics_prod
+    user: ${POSTGRES_PROD_USER}
+    password: ${POSTGRES_PROD_PASSWORD}
+
+storage:
+  warehouse_path: s3://analytics-warehouse/prod
+  retention_days: 365
+
+powerbi:
+  workspace_id: ${POWERBI_PROD_WORKSPACE_ID}
+  dataset_id: ${POWERBI_PROD_DATASET_ID}
+  refresh_interval_hours: 1
+EOF

@@ -1,0 +1,33 @@
+# Stage environment configuration
+environment: stage
+
+extends:
+  - ../common/base_config.yaml
+
+app:
+  log_level: INFO
+
+collectors:
+  mongodb:
+    uri: ${MONGODB_STAGE_URI}
+    database: analytics_stage
+    
+  newrelic:
+    account_id: ${NEWRELIC_STAGE_ACCOUNT_ID}
+    api_key: ${NEWRELIC_STAGE_API_KEY}
+    
+  postgres:
+    host: ${POSTGRES_STAGE_HOST}
+    port: 5432
+    database: analytics_stage
+    user: ${POSTGRES_STAGE_USER}
+    password: ${POSTGRES_STAGE_PASSWORD}
+
+storage:
+  warehouse_path: s3://analytics-warehouse/stage
+  retention_days: 90
+
+powerbi:
+  workspace_id: ${POWERBI_STAGE_WORKSPACE_ID}
+  dataset_id: ${POWERBI_STAGE_DATASET_ID}
+  refresh_interval_hours: 2
